@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile_user.username }}'s Profile{% endblock %}
+{% block content %}
+<div style="max-width:600px;margin:2rem auto;padding:2rem;background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(79,140,255,0.08);">
+    <div style="display:flex;align-items:center;gap:1.5rem;">
+        <img src="https://ui-avatars.com/api/?name={{ profile_user.username }}&background=4f8cff&color=fff&rounded=true&size=80" alt="avatar" style="width:80px;height:80px;border-radius:50%;">
+        <div>
+            <h2 style="margin:0;color:#4f8cff;">{{ profile_user.username }}</h2>
+            <div style="color:#888;">
+                <span><strong>{{ followers_count }}</strong> Followers</span> &middot;
+
+                <span><strong>{{ profile_user.profile.following.count }}</strong> Following</span>
+            </div>
+            {% if request.user != profile_user %}
+                {% if is_following %}
+                    <a href="{% url 'unfollow' profile_user.username %}" class="btn" style="background:#ff4f4f;color:#fff;">Unfollow</a>
+                {% else %}
+                    <a href="{% url 'follow' profile_user.username %}" class="btn" style="background:#4f8cff;color:#fff;">Follow</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <hr style="margin:2rem 0;">
+    <h3 style="color:#4f8cff;">Posts</h3>
+    {% for post in posts %}
+        <div style="margin-bottom:1.5rem;padding:1rem;border-radius:12px;background:#f7faff;">
+            <span style="font-size:0.9rem;color:#888;">{{ post.created_at|date:"M d, Y H:i" }}</span>
+            <p style="margin:0.5rem 0;">{{ post.content|linebreaks }}</p>
+            {% if post.image %}
+                <img src="{{ post.image.url }}" style="max-width:100%;border-radius:8px;">
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No posts yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Home | Socialize{% endblock %}
+{% block content %}
+<h2 style="text-align:center; color:#4f8cff; margin-bottom:2rem;">Latest Posts</h2>
+{% for post in posts %}
+    <div class="post" style="position:relative; box-shadow:0 4px 24px rgba(79,140,255,0.08); border-radius:16px; margin-bottom:2rem; padding:1.5rem 2rem; background:#fff;">
+        <div style="display:flex; align-items:center; margin-bottom:0.5rem;">
+            <img src="https://ui-avatars.com/api/?name={{ post.author.username|default:'U' }}&background=4f8cff&color=fff&rounded=true&size=40" alt="avatar" style="width:40px; height:40px; border-radius:50%; margin-right:1rem;">
+            <div>
+                <strong style="color:#4f8cff;">{{ post.author.username|default:"Unknown" }}</strong><br>
+                <span style="font-size:0.9rem; color:#888;">{{ post.created_at|date:"M d, Y H:i" }}</span>
+            </div>
+        </div>
+        <p style="font-size:1.1rem; margin:1rem 0;">{{ post.content|linebreaks }}</p>
+        {% if post.image %}
+            <img src="{{ post.image.url }}" style="max-width:100%; border-radius:12px; margin-bottom:1rem;" alt="Post Image">
+        {% endif %}
+        <div style="display:flex; align-items:center; gap:1rem;">
+            <form action="{% url 'like_post' post.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" style="background:none; border:none; cursor:pointer;">
+                    {% if user.is_authenticated and user in post.likes.all %}
+                        <span style="color:#ff4f4f; font-size:1.5rem;">&#10084;</span>
+                    {% else %}
+                        <span style="color:#aaa; font-size:1.5rem;">&#9825;</span>
+                    {% endif %}
+                </button>
+            </form>
+            <span style="font-size:1rem; color:#555;">{{ post.total_likes }} like{{ post.total_likes|pluralize }}</span>
+            <a class="btn" href="{% url 'post_detail' post.id %}">View</a>
+            {% if post.author and post.author.username %}
+                <a class="btn" href="{% url 'profile' post.author.username %}">Profile</a>
+            {% endif %}
+        </div>
+    </div>
+{% empty %}
+    <p style="text-align:center;">No posts yet.</p>
+{% endfor %}
+{% endblock %}

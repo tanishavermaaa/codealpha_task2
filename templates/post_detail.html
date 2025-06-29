@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Post | Socialize{% endblock %}
+{% block content %}
+<div class="post">
+    <div class="author">{{ post.author.username|default:"Unknown Author" }}</div>
+    <div class="date">
+        {% if post.created_at %}
+            {{ post.created_at|date:"M d, Y H:i" }}
+        {% else %}
+            Unknown Date
+        {% endif %}
+    </div>
+    <p>{% if post.content %}{{ post.content|linebreaks|safe }}{% else %}No content available.{% endif %}</p>
+</div>
+<a class="btn" href="{% url 'home' %}">Back to Home</a>
+{% endblock %}

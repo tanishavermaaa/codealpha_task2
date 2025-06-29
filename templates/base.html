@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Socialize{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        :root {
+            --primary: #4f8cff;
+            --secondary: #f5f6fa;
+            --accent: #ffb347;
+            --text: #222;
+            --bg: #fff;
+            --radius: 12px;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--secondary);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background: var(--primary);
+            color: #fff;
+            padding: 0.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        nav .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+        nav .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: var(--accent);
+        }
+        .container {
+            max-width: 700px;
+            margin: 2rem auto;
+            background: var(--bg);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            padding: 2rem 2.5rem;
+        }
+        h2 {
+            margin-top: 0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        form input, form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            background: #f9f9f9;
+        }
+        form button {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        form button:hover {
+            background: var(--accent);
+            color: var(--text);
+        }
+        .post, .profile-card {
+            background: var(--secondary);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .post .author {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .post .date {
+            color: #888;
+            font-size: 0.95rem;
+        }
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: var(--accent);
+            color: var(--text);
+        }
+        .alert {
+            background: #ffe0e0;
+            color: #b30000;
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            border: 1px solid #ffb3b3;
+        }
+        @media (max-width: 800px) {
+            .container {
+                padding: 1rem;
+            }
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            nav .nav-links {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="logo">Socialize</span>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'create_post' %}">New Post</a>
+                <a href="{% url 'profile' user.username %}">Profile</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
