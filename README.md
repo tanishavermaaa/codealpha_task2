@@ -2,7 +2,7 @@
 ````markdown
 # 🧑‍💻 Social Media Project
 
-A simple social media platform built using **Django** for the backend and **HTML/CSS/JavaScript** for the frontend.
+A simple social media platform built using Django for the backend and HTML/CSS/JavaScript for the frontend.
 
 ---
 
@@ -23,11 +23,8 @@ A simple social media platform built using **Django** for the backend and **HTML
 
 ---
 
-Then open your browser and go to **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** to use the app!
 
----
-
-✅ **What’s included:**
+✅ What’s included:
 - Clear project description  
 - Features section  
 - Tech stack  
